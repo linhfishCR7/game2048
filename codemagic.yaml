@@ -1,26 +1,20 @@
 workflows:
   cordova_android_build:
-    name: Build Cordova Android APK
+    name: Build Cordova Android App
     max_build_duration: 60
-    environment: {}
+    environment: {}  # <-- bỏ trống hoặc xóa luôn cũng được
     scripts:
       - name: Install Node.js & Cordova
         script: |
           curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
           apt-get install -y nodejs
           npm install -g cordova
-      - name: Install Android Build Tools 35.0.0
-        script: |
-          yes | sdkmanager "build-tools;35.0.0"
       - name: Install project dependencies
         script: |
           npm install
-      - name: Add Android platform & build APK
+      - name: Add Android platform & build release
         script: |
           cordova platform add android
-          cordova build android --release -- --gradleArg=-PcdvBuildToolsVersion=35.0.0 --gradleArg=-PcdvBuildMultipleApks=true
-      - name: List APKs
-        script: |
-          find platforms/android/ -name "*.apk"
+          cordova build android --release
     artifacts:
-      - platforms/android/app/build/outputs/apk/release/app-release.apk
+      - platforms/android/app/build/outputs/bundle/release/app-release.aab
