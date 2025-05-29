@@ -9,13 +9,16 @@ workflows:
           curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
           apt-get install -y nodejs
           npm install -g cordova
+      - name: Install Android Build Tools 35.0.0
+        script: |
+          yes | sdkmanager "build-tools;35.0.0"
       - name: Install project dependencies
         script: |
           npm install
       - name: Add Android platform & build APK
         script: |
           cordova platform add android
-          cordova build android --release -- --gradleArg=-PcdvBuildToolsVersion=33.0.0 --gradleArg=-PcdvBuildMultipleApks=true
+          cordova build android --release -- --gradleArg=-PcdvBuildToolsVersion=35.0.0 --gradleArg=-PcdvBuildMultipleApks=true
       - name: List APKs
         script: |
           find platforms/android/ -name "*.apk"
