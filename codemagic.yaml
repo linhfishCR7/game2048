@@ -1,0 +1,20 @@
+workflows:
+  cordova_android_build:
+    name: Build Cordova Android App
+    max_build_duration: 60
+    environment: {}  # <-- bỏ trống hoặc xóa luôn cũng được
+    scripts:
+      - name: Install Node.js & Cordova
+        script: |
+          curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+          apt-get install -y nodejs
+          npm install -g cordova
+      - name: Install project dependencies
+        script: |
+          npm install
+      - name: Add Android platform & build release
+        script: |
+          cordova platform add android
+          cordova build android --release
+    artifacts:
+      - platforms/android/app/build/outputs/bundle/release/app-release.aab
